@@ -1,18 +1,15 @@
-# Entorno virtual
-.venv/
-
 # Variables de entorno
 .env
 
+# Entorno virtual
+.venv/
+
 # Caché de Python
 __pycache__/
-*.pyc
+*.py[cod]
 
-# Archivos de VS Code
+# VS Code
 .vscode/
 
 # Logs
 *.log
-
-# Archivos temporales
-*.tmp
