@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, UTC
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -55,9 +55,9 @@ class Usuario(Base):
     )
 
     fecha_creacion: Mapped[datetime] = mapped_column(
-        DateTime,
-        default=datetime.utcnow
-    )
+    DateTime,
+    default=lambda: datetime.now(UTC)
+)
 
     ultimo_acceso: Mapped[datetime | None] = mapped_column(
         DateTime,

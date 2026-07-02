@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.db.database import Base
 
+
 class Rol(Base):
     __tablename__ = "roles"
 
@@ -20,6 +21,6 @@ class Rol(Base):
     )
 
     usuarios: Mapped[list["Usuario"]] = relationship(
-    "Usuario",
-    back_populates="rol",
-)
+        "Usuario",
+        back_populates="rol",
+    )
