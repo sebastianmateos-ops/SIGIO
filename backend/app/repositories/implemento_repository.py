@@ -14,6 +14,21 @@ class ImplementoRepository:
         )
 
     @staticmethod
+    def listar_por_categoria(
+        db: Session,
+        categoria_id: int,
+    ) -> list[Implemento]:
+
+        return (
+            db.query(Implemento)
+            .filter(
+                Implemento.categoria_id == categoria_id
+            )
+            .order_by(Implemento.codigo)
+            .all()
+        )
+
+    @staticmethod
     def obtener_por_id(
         db: Session,
         implemento_id: int,
@@ -34,6 +49,18 @@ class ImplementoRepository:
         return (
             db.query(Implemento)
             .filter(Implemento.codigo == codigo)
+            .first()
+        )
+
+    @staticmethod
+    def obtener_por_uuid(
+        db: Session,
+        uuid: str,
+    ) -> Implemento | None:
+
+        return (
+            db.query(Implemento)
+            .filter(Implemento.uuid == uuid)
             .first()
         )
 
