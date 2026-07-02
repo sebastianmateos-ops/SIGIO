@@ -7,8 +7,7 @@ from app.core.config import settings
 from app.db.database import Base
 
 # Importar todos los modelos aquí
-from app.models.usuario import Usuario
-
+import app.models
 config = context.config
 
 config.set_main_option("sqlalchemy.url", settings.DATABASE_URL)
