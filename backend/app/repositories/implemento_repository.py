@@ -65,6 +65,21 @@ class ImplementoRepository:
         )
 
     @staticmethod
+    def obtener_ultimo_por_categoria(
+        db: Session,
+        categoria_id: int,
+    ) -> Implemento | None:
+
+        return (
+            db.query(Implemento)
+            .filter(
+                Implemento.categoria_id == categoria_id
+            )
+            .order_by(Implemento.codigo.desc())
+            .first()
+        )
+    
+    @staticmethod
     def crear(
         db: Session,
         implemento: Implemento,
