@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class ImplementoBase(BaseModel):
@@ -37,6 +37,6 @@ class ImplementoResponse(ImplementoBase):
     activo: bool
     fecha_ingreso: datetime
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = ConfigDict(
+    from_attributes=True,
+    )

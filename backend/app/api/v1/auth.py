@@ -1,8 +1,13 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import (
+    APIRouter,
+    Depends,
+    HTTPException,
+)
+from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from app.db.database import get_db
-from app.schemas.auth import LoginRequest, Token
+from app.schemas.auth import Token
 from app.services.auth_service import AuthService
 
 router = APIRouter(
@@ -11,25 +16,28 @@ router = APIRouter(
 )
 
 
-@router.post("/login", response_model=Token)
+@router.post(
+    "/login",
+    response_model=Token,
+    summary="Iniciar sesión",
+    description="Autentica un usuario y devuelve un JWT.",
+)
 def login(
-    dados: LoginRequest,
+    form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db),
 ):
-
     token = AuthService.login(
         db,
-        dados.usuario,
-        dados.password,
+        form_data.username,
+        form_data.password,
     )
 
     if token is None:
         raise HTTPException(
             status_code=401,
-            detail="Usuario o contraseña incorrectos",
+            detail="Usuario o contraseña incorrectos.",
         )
 
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-    }
+    return Token(
+        access_token=token,
+    )

@@ -55,8 +55,8 @@ class Usuario(Base):
     )
 
     fecha_creacion: Mapped[datetime] = mapped_column(
-    DateTime,
-    default=lambda: datetime.now(UTC)
+        DateTime,
+        default=lambda: datetime.now(UTC)
 )
 
     ultimo_acceso: Mapped[datetime | None] = mapped_column(

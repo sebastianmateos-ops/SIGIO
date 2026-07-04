@@ -110,3 +110,18 @@ class ImplementoRepository:
 
         db.delete(implemento)
         db.commit()
+
+    @staticmethod
+    def actualizar_estado(
+        db: Session,
+        implemento: Implemento,
+        estado_id: int,
+    ) -> None:
+        """
+        Actualiza el estado del implemento.
+
+        No realiza commit.
+        La transacción será controlada por el Service.
+        """
+
+        implemento.estado_id = estado_id

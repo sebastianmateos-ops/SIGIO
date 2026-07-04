@@ -33,7 +33,7 @@ class ImplementoService:
         )
     
     @staticmethod
-    def validar_categoria(
+    def _validar_categoria(
         db: Session,
         categoria_id: int,
     ) -> Categoria:
@@ -85,7 +85,7 @@ class ImplementoService:
         Crea un nuevo implemento.
         """
 
-        categoria = ImplementoService.validar_categoria(
+        categoria = ImplementoService._validar_categoria(
             db,
             datos.categoria_id,
         )

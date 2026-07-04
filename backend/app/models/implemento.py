@@ -1,4 +1,5 @@
 from datetime import UTC, datetime
+from decimal import Decimal
 from uuid import uuid4
 
 from sqlalchemy import (
@@ -48,16 +49,16 @@ class Implemento(Base):
 
     numero_serie: Mapped[str | None] = mapped_column(String(100))
 
-    valor_estimado: Mapped[float | None] = mapped_column(
-        Numeric(10, 2)
+    valor_estimado: Mapped[Decimal | None] = mapped_column(
+        Numeric(10, 2),
     )
 
     ubicacion: Mapped[str | None] = mapped_column(
-        String(100)
+        String(100),
     )
 
     observaciones: Mapped[str | None] = mapped_column(
-        String(500)
+        String(500),
     )
 
     activo: Mapped[bool] = mapped_column(
