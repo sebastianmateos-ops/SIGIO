@@ -1,11 +1,41 @@
+from sqlalchemy.orm import Session
+
 from app.models.rol import Rol
-from app.repositories.base_repository import BaseRepository
 
 
-class RolRepository(BaseRepository[Rol]):
-    """
-    Repositorio de roles.
-    """
+class RolRepository:
 
-    def __init__(self):
-        super().__init__(Rol)
+    @staticmethod
+    def listar(
+        db: Session,
+    ) -> list[Rol]:
+
+        return (
+            db.query(Rol)
+            .order_by(Rol.nombre)
+            .all()
+        )
+
+    @staticmethod
+    def obtener_por_id(
+        db: Session,
+        rol_id: int,
+    ) -> Rol | None:
+
+        return (
+            db.query(Rol)
+            .filter(Rol.id == rol_id)
+            .first()
+        )
+
+    @staticmethod
+    def obtener_por_nombre(
+        db: Session,
+        nombre: str,
+    ) -> Rol | None:
+
+        return (
+            db.query(Rol)
+            .filter(Rol.nombre == nombre)
+            .first()
+        )

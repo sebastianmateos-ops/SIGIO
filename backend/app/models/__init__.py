@@ -5,3 +5,4 @@ from .estado_implemento import EstadoImplemento
 from .implemento import Implemento
 from .beneficiario import Beneficiario
 from .prestamo import Prestamo
+from .mantenimiento import Mantenimiento

@@ -16,3 +16,10 @@ from .usuario import (
     UsuarioResponse,
     UsuarioUpdate,
 )
+
+from .mantenimiento import (
+    MantenimientoCreate,
+    MantenimientoListado,
+    MantenimientoResponse,
+    MantenimientoSalida,
+)

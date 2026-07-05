@@ -3,10 +3,35 @@ from sqlalchemy.orm import Session
 from app.models.beneficiario import Beneficiario
 
 
-class BeneficiarioRepository(BaseRepository[Beneficiario]):
+class BeneficiarioRepository:
 
-    def __init__(self):
-        super().__init__(Beneficiario)
+    @staticmethod
+    def listar(
+        db: Session,
+    ) -> list[Beneficiario]:
+
+        return (
+            db.query(Beneficiario)
+            .order_by(
+                Beneficiario.apellido,
+                Beneficiario.nombre,
+            )
+            .all()
+        )
+
+    @staticmethod
+    def obtener_por_id(
+        db: Session,
+        beneficiario_id: int,
+    ) -> Beneficiario | None:
+
+        return (
+            db.query(Beneficiario)
+            .filter(
+                Beneficiario.id == beneficiario_id
+            )
+            .first()
+        )
 
     @staticmethod
     def obtener_por_uuid(
@@ -57,3 +82,35 @@ class BeneficiarioRepository(BaseRepository[Beneficiario]):
             )
             .all()
         )
+
+    @staticmethod
+    def crear(
+        db: Session,
+        beneficiario: Beneficiario,
+    ) -> Beneficiario:
+
+        db.add(beneficiario)
+        db.commit()
+        db.refresh(beneficiario)
+
+        return beneficiario
+
+    @staticmethod
+    def actualizar(
+        db: Session,
+        beneficiario: Beneficiario,
+    ) -> Beneficiario:
+
+        db.commit()
+        db.refresh(beneficiario)
+
+        return beneficiario
+
+    @staticmethod
+    def eliminar(
+        db: Session,
+        beneficiario: Beneficiario,
+    ):
+
+        db.delete(beneficiario)
+        db.commit()

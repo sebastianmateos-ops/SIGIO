@@ -1,41 +1,53 @@
 from sqlalchemy.orm import Session
 
 from app.models.estado_implemento import EstadoImplemento
-from app.repositories.base_repository import BaseRepository
 
 
-class EstadoImplementoRepository(BaseRepository[EstadoImplemento]):
-    """
-    Repositorio de estados de implemento.
-    """
+class EstadoImplementoRepository:
 
-    def __init__(self):
-        super().__init__(EstadoImplemento)
+    @staticmethod
+    def listar(
+        db: Session,
+    ) -> list[EstadoImplemento]:
 
+        return (
+            db.query(EstadoImplemento)
+            .order_by(EstadoImplemento.nombre)
+            .all()
+        )
+
+    @staticmethod
+    def obtener_por_id(
+        db: Session,
+        estado_id: int,
+    ) -> EstadoImplemento | None:
+
+        return (
+            db.query(EstadoImplemento)
+            .filter(EstadoImplemento.id == estado_id)
+            .first()
+        )
+
+    @staticmethod
     def obtener_por_codigo(
-        self,
         db: Session,
         codigo: str,
     ) -> EstadoImplemento | None:
 
         return (
             db.query(EstadoImplemento)
-            .filter(
-                EstadoImplemento.codigo == codigo
-            )
+            .filter(EstadoImplemento.codigo == codigo)
             .first()
         )
 
+    @staticmethod
     def obtener_por_nombre(
-        self,
         db: Session,
         nombre: str,
     ) -> EstadoImplemento | None:
 
         return (
             db.query(EstadoImplemento)
-            .filter(
-                EstadoImplemento.nombre == nombre
-            )
+            .filter(EstadoImplemento.nombre == nombre)
             .first()
         )
