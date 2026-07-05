@@ -1,129 +1,82 @@
 from typing import Generic, TypeVar
 
-from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
-from app.db.database import Base
-
-ModelType = TypeVar("ModelType", bound=Base)
+T = TypeVar("T")
 
 
-class BaseRepository(Generic[ModelType]):
+class BaseRepository(Generic[T]):
     """
-    Repositorio base reutilizable.
-
-    Implementa las operaciones CRUD comunes para todos los
-    los repositorios del sistema SIGIO.
-
-    No debe contener reglas de negocio.
+    Repositorio base para operaciones CRUD.
     """
 
-    def __init__(
-        self,
-        model: type[ModelType],
-    ):
+    def __init__(self, model: type[T]):
         self.model = model
 
     def listar(
         self,
         db: Session,
-    ) -> list[ModelType]:
-        """
-        Obtiene todos los registros.
-        """
-        return db.scalars(
-            select(self.model)
-        ).all()
+    ) -> list[T]:
 
-    def obtener(
-        self,
-        db: Session,
-        registro_id: int,
-    ) -> ModelType | None:
-        """
-        Obtiene un registro por su ID.
-        """
-        return db.get(
-            self.model,
-            registro_id,
+        return (
+            db.query(self.model)
+            .all()
         )
 
-    def obtener_por_uuid(
+    def obtener_por_id(
         self,
         db: Session,
-        uuid: str,
-    ) -> ModelType | None:
-        """
-        Obtiene un registro por UUID.
-        """
-        return db.scalar(
-            select(self.model).where(
-                self.model.uuid == uuid
+        entity_id: int,
+    ) -> T | None:
+
+        return (
+            db.query(self.model)
+            .filter(
+                self.model.id == entity_id
             )
+            .first()
         )
 
-    def crear(
+    def agregar(
         self,
         db: Session,
-        objeto: ModelType,
-    ) -> ModelType:
+        entity: T,
+    ) -> None:
         """
-        Inserta un nuevo registro.
+        Agrega una entidad a la sesión.
+        No realiza commit.
         """
-        db.add(objeto)
-        db.commit()
-        db.refresh(objeto)
 
-        return objeto
+        db.add(entity)
 
     def actualizar(
         self,
         db: Session,
-        objeto: ModelType,
-    ) -> ModelType:
+        entity: T,
+    ) -> None:
         """
-        Guarda los cambios realizados.
+        La entidad ya está asociada a la sesión.
+        El commit queda a cargo del Service.
         """
-        db.commit()
-        db.refresh(objeto)
 
-        return objeto
+        pass
 
     def eliminar(
         self,
         db: Session,
-        objeto: ModelType,
+        entity: T,
     ) -> None:
         """
-        Elimina un registro.
+        Elimina una entidad.
+        No realiza commit.
         """
-        db.delete(objeto)
-        db.commit()
 
-    def contar(
+        db.delete(entity)
+
+    def refrescar(
         self,
         db: Session,
-    ) -> int:
-        """
-        Devuelve la cantidad de registros.
-        """
-        return db.scalar(
-            select(func.count())
-            .select_from(self.model)
-        ) or 0
+        entity: T,
+    ) -> None:
 
-    def existe(
-        self,
-        db: Session,
-        registro_id: int,
-    ) -> bool:
-        """
-        Verifica si existe un registro.
-        """
-        return (
-            self.obtener(
-                db,
-                registro_id,
-            )
-            is not None
-        )
+        db.refresh(entity)

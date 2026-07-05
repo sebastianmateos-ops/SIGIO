@@ -1,29 +1,25 @@
 from sqlalchemy.orm import Session
 
 from app.models.categoria import Categoria
+from app.repositories.base_repository import BaseRepository
 
 
-class CategoriaRepository:
+class CategoriaRepository(BaseRepository[Categoria]):
+    """
+    Repositorio de categorías.
+    """
 
-    @staticmethod
-    def obtener_por_id(
+    def __init__(self):
+        super().__init__(Categoria)
+
+    def obtener_por_codigo(
+        self,
         db: Session,
-        categoria_id: int,
+        codigo: str,
     ) -> Categoria | None:
 
         return (
             db.query(Categoria)
-            .filter(Categoria.id == categoria_id)
+            .filter(Categoria.codigo == codigo)
             .first()
-        )
-
-    @staticmethod
-    def listar(
-        db: Session,
-    ) -> list[Categoria]:
-
-        return (
-            db.query(Categoria)
-            .order_by(Categoria.nombre)
-            .all()
         )

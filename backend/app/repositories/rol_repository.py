@@ -1,21 +1,11 @@
-from sqlalchemy.orm import Session
-
 from app.models.rol import Rol
+from app.repositories.base_repository import BaseRepository
 
 
-class RolRepository:
+class RolRepository(BaseRepository[Rol]):
+    """
+    Repositorio de roles.
+    """
 
-    @staticmethod
-    def obtener_por_nombre(db: Session, nombre: str) -> Rol | None:
-        return (
-            db.query(Rol)
-            .filter(Rol.nombre == nombre)
-            .first()
-        )
-
-    @staticmethod
-    def crear(db: Session, rol: Rol) -> Rol:
-        db.add(rol)
-        db.commit()
-        db.refresh(rol)
-        return rol
+    def __init__(self):
+        super().__init__(Rol)

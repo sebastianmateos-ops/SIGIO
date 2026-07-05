@@ -1,29 +1,41 @@
 from sqlalchemy.orm import Session
 
 from app.models.usuario import Usuario
+from app.repositories.base_repository import BaseRepository
 
 
-class UsuarioRepository:
+class UsuarioRepository(BaseRepository[Usuario]):
+    """
+    Repositorio de usuarios.
+    """
 
-    @staticmethod
-    def obtener_por_usuario(db: Session, usuario: str) -> Usuario | None:
+    def __init__(self):
+        super().__init__(Usuario)
+
+    def obtener_por_usuario(
+        self,
+        db: Session,
+        usuario: str,
+    ) -> Usuario | None:
+
         return (
             db.query(Usuario)
-            .filter(Usuario.usuario == usuario)
+            .filter(
+                Usuario.usuario == usuario
+            )
             .first()
         )
 
-    @staticmethod
-    def obtener_por_id(db: Session, usuario_id: int) -> Usuario | None:
+    def obtener_por_email(
+        self,
+        db: Session,
+        email: str,
+    ) -> Usuario | None:
+
         return (
             db.query(Usuario)
-            .filter(Usuario.id == usuario_id)
+            .filter(
+                Usuario.email == email
+            )
             .first()
         )
-
-    @staticmethod
-    def crear(db: Session, usuario: Usuario) -> Usuario:
-        db.add(usuario)
-        db.commit()
-        db.refresh(usuario)
-        return usuario
