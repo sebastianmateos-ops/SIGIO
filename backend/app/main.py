@@ -22,6 +22,10 @@ from app.api.v1.mantenimiento import (
     router as mantenimiento_router,
 )
 
+from app.api.v1.adquisicion import (
+    router as adquisicion_router,
+)
+
 app = FastAPI()
 
 app.include_router(auth_router)
@@ -29,6 +33,7 @@ app.include_router(implemento_router)
 app.include_router(beneficiario_router)
 app.include_router(prestamo_router)
 app.include_router(mantenimiento_router)
+app.include_router(adquisicion_router)
 
 
 @app.get("/")

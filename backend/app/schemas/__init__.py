@@ -23,3 +23,10 @@ from .mantenimiento import (
     MantenimientoResponse,
     MantenimientoSalida,
 )
+
+from .adquisicion import (
+    AdquisicionCreate,
+    AdquisicionImplementoCreate,
+    AdquisicionListado,
+    AdquisicionResponse,
+)

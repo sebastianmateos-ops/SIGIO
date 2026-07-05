@@ -1,0 +1,8 @@
+TIPOS_ORIGEN_ADQUISICION = {
+    "DONACION",
+    "COMPRA",
+    "TRANSFERENCIA",
+    "CONVENIO",
+    "RECUPERACION",
+    "OTRO",
+}
