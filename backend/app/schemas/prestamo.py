@@ -41,6 +41,17 @@ class PrestamoUpdate(BaseModel):
         max_length=500,
     )
 
+class PrestamoDevolucion(BaseModel):
+    """
+    Datos requeridos para registrar
+    la devolución de un préstamo.
+    """
+
+    observaciones: str | None = Field(
+        default=None,
+        max_length=500,
+        description="Observaciones de la devolución.",
+    )
 
 class PrestamoResponse(PrestamoBase):
 

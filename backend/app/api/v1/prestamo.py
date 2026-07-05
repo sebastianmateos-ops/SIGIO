@@ -3,15 +3,21 @@ from sqlalchemy.orm import Session
 
 from app.db.database import get_db
 from app.models.usuario import Usuario
+
 from app.schemas.prestamo import (
     PrestamoCreate,
+    PrestamoDevolucion,
     PrestamoResponse,
     PrestamoUpdate,
 )
+
 from app.security.dependencies import (
     get_current_active_user,
 )
-from app.services.prestamo_service import PrestamoService
+
+from app.services.prestamo_service import (
+    PrestamoService,
+)
 
 router = APIRouter(
     prefix="/prestamos",
@@ -25,7 +31,9 @@ router = APIRouter(
     summary="Listar préstamos",
 )
 def listar_prestamos(
-    current_user: Usuario = Depends(get_current_active_user),
+    current_user: Usuario = Depends(
+        get_current_active_user,
+    ),
     db: Session = Depends(get_db),
 ):
     return PrestamoService.listar(db)
@@ -38,7 +46,9 @@ def listar_prestamos(
 )
 def obtener_prestamo(
     prestamo_id: int,
-    current_user: Usuario = Depends(get_current_active_user),
+    current_user: Usuario = Depends(
+        get_current_active_user,
+    ),
     db: Session = Depends(get_db),
 ):
     prestamo = PrestamoService.obtener(
@@ -63,10 +73,13 @@ def obtener_prestamo(
 )
 def crear_prestamo(
     datos: PrestamoCreate,
-    current_user: Usuario = Depends(get_current_active_user),
+    current_user: Usuario = Depends(
+        get_current_active_user,
+    ),
     db: Session = Depends(get_db),
 ):
     try:
+
         return PrestamoService.crear(
             db,
             datos,
@@ -74,6 +87,7 @@ def crear_prestamo(
         )
 
     except ValueError as e:
+
         raise HTTPException(
             status_code=400,
             detail=str(e),
@@ -88,7 +102,9 @@ def crear_prestamo(
 def actualizar_prestamo(
     prestamo_id: int,
     datos: PrestamoUpdate,
-    current_user: Usuario = Depends(get_current_active_user),
+    current_user: Usuario = Depends(
+        get_current_active_user,
+    ),
     db: Session = Depends(get_db),
 ):
     prestamo = PrestamoService.obtener(
@@ -116,7 +132,9 @@ def actualizar_prestamo(
 )
 def eliminar_prestamo(
     prestamo_id: int,
-    current_user: Usuario = Depends(get_current_active_user),
+    current_user: Usuario = Depends(
+        get_current_active_user,
+    ),
     db: Session = Depends(get_db),
 ):
     prestamo = PrestamoService.obtener(
@@ -134,3 +152,36 @@ def eliminar_prestamo(
         db,
         prestamo,
     )
+
+    return None
+
+
+@router.post(
+    "/{prestamo_id}/devolver",
+    response_model=PrestamoResponse,
+    summary="Registrar devolución",
+    description="Registra la devolución de un implemento prestado.",
+)
+def devolver_prestamo(
+    prestamo_id: int,
+    datos: PrestamoDevolucion,
+    current_user: Usuario = Depends(
+        get_current_active_user,
+    ),
+    db: Session = Depends(get_db),
+):
+    try:
+
+        return PrestamoService.devolver(
+            db,
+            prestamo_id,
+            datos,
+            current_user.id,
+        )
+
+    except ValueError as e:
+
+        raise HTTPException(
+            status_code=400,
+            detail=str(e),
+        )

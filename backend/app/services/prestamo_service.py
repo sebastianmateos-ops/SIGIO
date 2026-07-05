@@ -22,6 +22,10 @@ from app.schemas.prestamo import (
     PrestamoUpdate,
 )
 
+from datetime import UTC, datetime
+
+from app.schemas.prestamo import PrestamoDevolucion
+
 
 class PrestamoService:
 
@@ -177,3 +181,73 @@ class PrestamoService:
             db,
             prestamo,
         )
+
+    @staticmethod
+    def devolver(
+        db: Session,
+        prestamo_id: int,
+        datos: PrestamoDevolucion,
+        usuario_id: int,
+    ) -> Prestamo:
+        """
+        Registra la devolución de un préstamo.
+        """
+
+        prestamo = PrestamoRepository.obtener_activo_por_id(
+            db,
+            prestamo_id,
+        )
+
+        if prestamo is None:
+            raise ValueError(
+                "El préstamo no existe o ya fue devuelto."
+            )
+
+        estado_disponible = (
+            EstadoImplementoRepository.obtener_por_codigo(
+                db,
+                "DISP",
+            )
+        )
+
+        if estado_disponible is None:
+            raise ValueError(
+                "No existe el estado DISP."
+            )
+
+        implemento = ImplementoRepository.obtener_por_id(
+            db,
+            prestamo.implemento_id,
+        )
+
+        if implemento is None:
+            raise ValueError(
+                "El implemento no existe."
+            )
+
+        try:
+
+            prestamo.estado = "DEVUELTO"
+
+            prestamo.fecha_devolucion = datetime.now(
+                UTC,
+            )
+
+            prestamo.usuario_devolucion_id = usuario_id
+
+            prestamo.observaciones = datos.observaciones
+
+            implemento.estado_id = estado_disponible.id
+
+            db.commit()
+
+            db.refresh(prestamo)
+            db.refresh(implemento)
+
+            return prestamo
+
+        except Exception:
+
+            db.rollback()
+
+            raise

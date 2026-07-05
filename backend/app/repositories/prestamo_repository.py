@@ -187,3 +187,36 @@ class PrestamoRepository:
 
         db.delete(prestamo)
         db.commit()
+
+    @staticmethod
+    def obtener_activo_por_id(
+        db: Session,
+        prestamo_id: int,
+    ) -> Prestamo | None:
+        """
+        Obtiene un préstamo activo por su ID.
+        """
+
+        return (
+            db.query(Prestamo)
+            .filter(
+                Prestamo.id == prestamo_id,
+                Prestamo.estado == "ACTIVO",
+                Prestamo.activo.is_(True),
+            )
+            .first()
+        )
+
+    @staticmethod
+    def actualizar(
+        db: Session,
+        prestamo: Prestamo,
+    ) -> Prestamo:
+        """
+        Actualiza un préstamo existente.
+        """
+
+        db.commit()
+        db.refresh(prestamo)
+
+        return prestamo
