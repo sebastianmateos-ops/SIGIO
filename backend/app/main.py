@@ -7,6 +7,9 @@ from app.api.v1.prestamo import router as prestamo_router
 from app.api.v1.mantenimiento import router as mantenimiento_router
 from app.api.v1.adquisicion import router as adquisicion_router
 from app.api.v1.baja import router as baja_router
+from app.api.v1.dashboard import router as dashboard_router
+from app.api.v1.reporte import router as reporte_router
+
 from app.core.config import settings
 
 app = FastAPI(
@@ -21,6 +24,8 @@ app.include_router(prestamo_router)
 app.include_router(mantenimiento_router)
 app.include_router(adquisicion_router)
 app.include_router(baja_router)
+app.include_router(dashboard_router)
+app.include_router(reporte_router)
 
 
 @app.get(

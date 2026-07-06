@@ -4,3 +4,5 @@ from .beneficiario import router as beneficiario_router
 from .mantenimiento import router as mantenimiento_router
 from .adquisicion import router as adquisicion_router
 from .baja import router as baja_router
+from .dashboard import router as dashboard_router
+from .reporte import router as reporte_router
