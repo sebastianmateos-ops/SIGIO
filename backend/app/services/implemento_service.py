@@ -12,14 +12,34 @@ from app.repositories.estado_implemento_repository import (
 from app.repositories.implemento_repository import (
     ImplementoRepository,
 )
-from app.schemas.implemento import ImplementoCreate
+
+from app.schemas.implemento import (
+    ImplementoCreate,
+    ImplementoListItem,
+)
 
 
 class ImplementoService:
 
     @staticmethod
-    def listar(db: Session) -> list[Implemento]:
-        return ImplementoRepository.listar(db)
+    def listar(
+        db: Session,
+    ) -> list[ImplementoListItem]:
+
+        implementos = ImplementoRepository.listar(db)
+
+        return [
+            ImplementoListItem(
+                id=i.id,
+                codigo=i.codigo,
+                categoria=i.categoria.nombre,
+                marca=i.marca,
+                modelo=i.modelo,
+                estado=i.estado.nombre,
+                ubicacion=i.ubicacion,
+            )
+            for i in implementos
+        ]
 
     @staticmethod
     def obtener(
@@ -31,7 +51,7 @@ class ImplementoService:
             db,
             implemento_id,
         )
-    
+
     @staticmethod
     def _validar_categoria(
         db: Session,
@@ -49,7 +69,7 @@ class ImplementoService:
             )
 
         return categoria
-    
+
     @staticmethod
     def _generar_codigo(
         db: Session,
@@ -75,15 +95,12 @@ class ImplementoService:
             f"-{categoria.codigo}"
             f"-{correlativo:04d}"
         )
-    
+
     @staticmethod
     def crear(
         db: Session,
         datos: ImplementoCreate,
     ) -> Implemento:
-        """
-        Crea un nuevo implemento.
-        """
 
         categoria = ImplementoService._validar_categoria(
             db,
@@ -101,7 +118,7 @@ class ImplementoService:
             raise ValueError(
                 "No existe el estado inicial 'DISP'."
             )
-        
+
         codigo = ImplementoService._generar_codigo(
             db,
             categoria,
@@ -119,9 +136,7 @@ class ImplementoService:
             observaciones=datos.observaciones,
         )
 
-        implemento = ImplementoRepository.crear(
+        return ImplementoRepository.crear(
             db,
             implemento,
         )
-
-        return implemento

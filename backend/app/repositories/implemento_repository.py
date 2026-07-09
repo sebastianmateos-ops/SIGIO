@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.models.implemento import Implemento
 
@@ -12,7 +12,16 @@ class ImplementoRepository:
 
         return (
             db.query(Implemento)
-            .order_by(Implemento.codigo)
+            .options(
+                joinedload(Implemento.categoria),
+                joinedload(Implemento.estado),
+            )
+            .filter(
+                Implemento.activo.is_(True),
+            )
+            .order_by(
+                Implemento.codigo,
+            )
             .all()
         )
 
@@ -24,10 +33,17 @@ class ImplementoRepository:
 
         return (
             db.query(Implemento)
-            .filter(
-                Implemento.categoria_id == categoria_id
+            .options(
+                joinedload(Implemento.categoria),
+                joinedload(Implemento.estado),
             )
-            .order_by(Implemento.codigo)
+            .filter(
+                Implemento.activo.is_(True),
+                Implemento.categoria_id == categoria_id,
+            )
+            .order_by(
+                Implemento.codigo,
+            )
             .all()
         )
 
@@ -39,7 +55,13 @@ class ImplementoRepository:
 
         return (
             db.query(Implemento)
-            .filter(Implemento.id == implemento_id)
+            .options(
+                joinedload(Implemento.categoria),
+                joinedload(Implemento.estado),
+            )
+            .filter(
+                Implemento.id == implemento_id,
+            )
             .first()
         )
 
@@ -51,7 +73,9 @@ class ImplementoRepository:
 
         return (
             db.query(Implemento)
-            .filter(Implemento.codigo == codigo)
+            .filter(
+                Implemento.codigo == codigo,
+            )
             .first()
         )
 
@@ -63,7 +87,9 @@ class ImplementoRepository:
 
         return (
             db.query(Implemento)
-            .filter(Implemento.uuid == uuid)
+            .filter(
+                Implemento.uuid == uuid,
+            )
             .first()
         )
 
@@ -76,9 +102,11 @@ class ImplementoRepository:
         return (
             db.query(Implemento)
             .filter(
-                Implemento.categoria_id == categoria_id
+                Implemento.categoria_id == categoria_id,
             )
-            .order_by(Implemento.codigo.desc())
+            .order_by(
+                Implemento.codigo.desc(),
+            )
             .first()
         )
 
@@ -109,7 +137,7 @@ class ImplementoRepository:
     def eliminar(
         db: Session,
         implemento: Implemento,
-    ):
+    ) -> None:
 
         db.delete(implemento)
         db.commit()

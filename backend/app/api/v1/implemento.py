@@ -9,6 +9,7 @@ from app.db.database import get_db
 from app.models.usuario import Usuario
 from app.schemas.implemento import (
     ImplementoCreate,
+    ImplementoListItem,
     ImplementoResponse,
 )
 from app.security.dependencies import (
@@ -26,9 +27,9 @@ router = APIRouter(
 
 @router.get(
     "",
-    response_model=list[ImplementoResponse],
+    response_model=list[ImplementoListItem],
     summary="Listar implementos",
-    description="Obtiene la lista de todos los implementos registrados.",
+    description="Obtiene la lista de implementos para visualización.",
 )
 def listar_implementos(
     current_user: Usuario = Depends(
@@ -43,7 +44,6 @@ def listar_implementos(
     "/{implemento_id}",
     response_model=ImplementoResponse,
     summary="Obtener implemento por ID",
-    description="Obtiene la información de un implemento a partir de su identificador.",
 )
 def obtener_implemento(
     implemento_id: int,
@@ -71,7 +71,6 @@ def obtener_implemento(
     response_model=ImplementoResponse,
     status_code=201,
     summary="Crear implemento",
-    description="Registra un nuevo implemento en el inventario.",
 )
 def crear_implemento(
     datos: ImplementoCreate,

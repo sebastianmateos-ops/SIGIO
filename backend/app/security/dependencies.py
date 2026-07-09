@@ -7,8 +7,10 @@ from app.models.usuario import Usuario
 from app.repositories.usuario_repository import UsuarioRepository
 from app.security.jwt import decode_access_token
 
+API_PREFIX = "/api/v1"
+
 oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl="/auth/login",
+    tokenUrl=f"{API_PREFIX}/auth/login"
 )
 
 

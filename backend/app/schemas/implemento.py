@@ -3,6 +3,8 @@ from decimal import Decimal
 
 from pydantic import BaseModel, ConfigDict
 
+from pydantic import BaseModel, ConfigDict
+
 
 class ImplementoBase(BaseModel):
     categoria_id: int
@@ -40,3 +42,19 @@ class ImplementoResponse(ImplementoBase):
     model_config = ConfigDict(
     from_attributes=True,
     )
+
+
+class ImplementoListItem(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    codigo: str
+
+    categoria: str
+
+    marca: str | None = None
+    modelo: str | None = None
+
+    estado: str
+
+    ubicacion: str | None = None
