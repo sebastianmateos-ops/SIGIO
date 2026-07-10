@@ -39,7 +39,9 @@ export default function Sidebar() {
       >
         <Typography
           variant="h6"
-          fontWeight="bold"
+          sx={{
+            fontWeight: "bold",
+          }}
         >
           Menú
         </Typography>

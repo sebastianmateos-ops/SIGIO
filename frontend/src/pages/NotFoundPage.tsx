@@ -22,12 +22,16 @@ export default function NotFoundPage() {
       >
         <Stack
           spacing={3}
-          alignItems="center"
+          sx={{
+            alignItems: "center",
+          }}
         >
           <Typography
             variant="h1"
             color="primary"
-            fontWeight="bold"
+            sx={{
+              fontWeight: "bold",
+            }}
           >
             404
           </Typography>

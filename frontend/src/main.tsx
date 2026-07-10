@@ -1,16 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
 import { BrowserRouter } from "react-router-dom";
+
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
+
+import {
+  CssBaseline,
+  ThemeProvider,
+} from "@mui/material";
 
 import App from "./App";
 
 import { theme } from "./theme/theme";
+import { AuthProvider } from "./contexts/AuthContext";
 
 import "./index.css";
 
@@ -20,13 +26,17 @@ ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
 ).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
-      </BrowserRouter>
-    </QueryClientProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AuthProvider>
+            <App />
+          </AuthProvider>
+        </BrowserRouter>
+      </QueryClientProvider>
+
+    </ThemeProvider>
   </React.StrictMode>,
 );

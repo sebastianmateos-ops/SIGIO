@@ -19,7 +19,9 @@ export default function HomePage() {
             <Typography
               variant="h4"
               color="primary"
-              fontWeight="bold"
+              sx={{
+                fontWeight: "bold",
+              }}
             >
               SIGIO
             </Typography>
@@ -34,7 +36,11 @@ export default function HomePage() {
               Club de Leones San José de Mayo
             </Typography>
 
-            <Box pt={2}>
+            <Box
+              sx={{
+                pt: 2,
+              }}
+            >
               <Typography variant="body1">
                 Bienvenido al Sistema de Gestión de Implementos
                 Ortopédicos.

@@ -31,8 +31,10 @@ export default function Footer() {
         <Typography
           variant="caption"
           color="text.secondary"
-          display="block"
-          sx={{ mt: 0.5 }}
+          sx={{
+            display: "block",
+            mt: 2,
+          }}
         >
           Club de Leones San José de Mayo · © {currentYear}
         </Typography>
