@@ -2,8 +2,10 @@ from datetime import date
 from uuid import uuid4
 
 from sqlalchemy import (
+    Boolean,
     Date,
     String,
+    Text,
 )
 from sqlalchemy.orm import (
     Mapped,
@@ -27,6 +29,13 @@ class Beneficiario(AuditMixin, Base):
         default=lambda: str(uuid4()),
         unique=True,
         nullable=False,
+    )
+
+    codigo: Mapped[str] = mapped_column(
+        String(20),
+        unique=True,
+        nullable=False,
+        index=True,
     )
 
     tipo_documento: Mapped[str] = mapped_column(
@@ -63,6 +72,10 @@ class Beneficiario(AuditMixin, Base):
         String(30),
     )
 
+    celular: Mapped[str | None] = mapped_column(
+        String(30),
+    )
+
     email: Mapped[str | None] = mapped_column(
         String(150),
     )
@@ -80,7 +93,13 @@ class Beneficiario(AuditMixin, Base):
     )
 
     observaciones: Mapped[str | None] = mapped_column(
-        String(500),
+        Text,
+    )
+
+    activo: Mapped[bool] = mapped_column(
+        Boolean,
+        default=True,
+        nullable=False,
     )
 
     prestamos: Mapped[list["Prestamo"]] = relationship(

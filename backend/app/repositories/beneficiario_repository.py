@@ -1,3 +1,4 @@
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.models.beneficiario import Beneficiario
@@ -12,6 +13,7 @@ class BeneficiarioRepository:
 
         return (
             db.query(Beneficiario)
+            .filter(Beneficiario.activo.is_(True))
             .order_by(
                 Beneficiario.apellido,
                 Beneficiario.nombre,
@@ -28,7 +30,7 @@ class BeneficiarioRepository:
         return (
             db.query(Beneficiario)
             .filter(
-                Beneficiario.id == beneficiario_id
+                Beneficiario.id == beneficiario_id,
             )
             .first()
         )
@@ -42,7 +44,7 @@ class BeneficiarioRepository:
         return (
             db.query(Beneficiario)
             .filter(
-                Beneficiario.uuid == uuid
+                Beneficiario.uuid == uuid,
             )
             .first()
         )
@@ -64,6 +66,22 @@ class BeneficiarioRepository:
         )
 
     @staticmethod
+    def obtener_ultimo_codigo(
+        db: Session,
+    ) -> str | None:
+
+        ultimo = (
+            db.query(Beneficiario)
+            .order_by(Beneficiario.codigo.desc())
+            .first()
+        )
+
+        if ultimo:
+            return ultimo.codigo
+
+        return None
+
+    @staticmethod
     def buscar(
         db: Session,
         texto: str,
@@ -72,9 +90,13 @@ class BeneficiarioRepository:
         return (
             db.query(Beneficiario)
             .filter(
-                (Beneficiario.nombre.ilike(f"%{texto}%")) |
-                (Beneficiario.apellido.ilike(f"%{texto}%")) |
-                (Beneficiario.numero_documento.ilike(f"%{texto}%"))
+                Beneficiario.activo.is_(True),
+                or_(
+                    Beneficiario.codigo.ilike(f"%{texto}%"),
+                    Beneficiario.nombre.ilike(f"%{texto}%"),
+                    Beneficiario.apellido.ilike(f"%{texto}%"),
+                    Beneficiario.numero_documento.ilike(f"%{texto}%"),
+                ),
             )
             .order_by(
                 Beneficiario.apellido,
@@ -110,7 +132,9 @@ class BeneficiarioRepository:
     def eliminar(
         db: Session,
         beneficiario: Beneficiario,
-    ):
+    ) -> None:
 
-        db.delete(beneficiario)
+        beneficiario.activo = False
+
         db.commit()
+        db.refresh(beneficiario)

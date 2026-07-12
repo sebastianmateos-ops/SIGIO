@@ -39,6 +39,11 @@ class BeneficiarioBase(BaseModel):
         max_length=30,
     )
 
+    celular: str | None = Field(
+        default=None,
+        max_length=30,
+    )
+
     email: EmailStr | None = None
 
     direccion: str | None = Field(
@@ -56,10 +61,9 @@ class BeneficiarioBase(BaseModel):
         max_length=100,
     )
 
-    observaciones: str | None = Field(
-        default=None,
-        max_length=500,
-    )
+    observaciones: str | None = None
+
+    activo: bool = True
 
 
 class BeneficiarioCreate(BeneficiarioBase):
@@ -97,6 +101,11 @@ class BeneficiarioUpdate(BaseModel):
         max_length=30,
     )
 
+    celular: str | None = Field(
+        default=None,
+        max_length=30,
+    )
+
     email: EmailStr | None = None
 
     direccion: str | None = Field(
@@ -114,10 +123,7 @@ class BeneficiarioUpdate(BaseModel):
         max_length=100,
     )
 
-    observaciones: str | None = Field(
-        default=None,
-        max_length=500,
-    )
+    observaciones: str | None = None
 
     activo: bool | None = None
 
@@ -125,7 +131,7 @@ class BeneficiarioUpdate(BaseModel):
 class BeneficiarioResponse(BeneficiarioBase):
     id: int
     uuid: str
-    activo: bool
+    codigo: str
     fecha_creacion: datetime
     fecha_actualizacion: datetime | None
 

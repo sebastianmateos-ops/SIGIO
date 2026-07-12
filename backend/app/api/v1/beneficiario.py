@@ -34,7 +34,7 @@ router = APIRouter(
     "",
     response_model=list[BeneficiarioResponse],
     summary="Listar beneficiarios",
-    description="Obtiene la lista de todos los beneficiarios registrados.",
+    description="Obtiene la lista de beneficiarios activos.",
 )
 def listar_beneficiarios(
     current_user: Usuario = Depends(get_current_user),
@@ -47,7 +47,7 @@ def listar_beneficiarios(
     "/buscar",
     response_model=list[BeneficiarioResponse],
     summary="Buscar beneficiarios",
-    description="Busca beneficiarios por nombre, apellido o documento.",
+    description="Busca beneficiarios por código, nombre, apellido o documento.",
 )
 def buscar_beneficiarios(
     texto: str = Query(
@@ -142,8 +142,8 @@ def actualizar_beneficiario(
 @router.delete(
     "/{beneficiario_id}",
     status_code=204,
-    summary="Eliminar beneficiario",
-    description="Elimina un beneficiario del sistema.",
+    summary="Desactivar beneficiario",
+    description="Realiza la baja lógica de un beneficiario.",
 )
 def eliminar_beneficiario(
     beneficiario_id: int,

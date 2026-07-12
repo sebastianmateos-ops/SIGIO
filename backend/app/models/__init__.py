@@ -8,3 +8,4 @@ from .prestamo import Prestamo
 from .mantenimiento import Mantenimiento
 from .adquisicion import Adquisicion
 from .adquisicion_implemento import AdquisicionImplemento
+from .baja import Baja

@@ -88,13 +88,30 @@ class BeneficiarioService:
             )
 
     @staticmethod
+    def _generar_codigo(
+        db: Session,
+    ) -> str:
+
+        ultimo = (
+            BeneficiarioRepository.obtener_ultimo_codigo(
+                db,
+            )
+        )
+
+        if ultimo is None:
+            return "BEN-000001"
+
+        numero = int(
+            ultimo.replace("BEN-", "")
+        )
+
+        return f"BEN-{numero + 1:06d}"
+
+    @staticmethod
     def crear(
         db: Session,
         datos: BeneficiarioCreate,
     ) -> Beneficiario:
-        """
-        Crea un nuevo beneficiario.
-        """
 
         BeneficiarioService._validar_documento_unico(
             db,
@@ -102,18 +119,27 @@ class BeneficiarioService:
             datos.numero_documento,
         )
 
+        codigo = (
+            BeneficiarioService._generar_codigo(
+                db,
+            )
+        )
+
         beneficiario = Beneficiario(
+            codigo=codigo,
             tipo_documento=datos.tipo_documento,
             numero_documento=datos.numero_documento,
             nombre=datos.nombre,
             apellido=datos.apellido,
             fecha_nacimiento=datos.fecha_nacimiento,
             telefono=datos.telefono,
+            celular=datos.celular,
             email=datos.email,
             direccion=datos.direccion,
             ciudad=datos.ciudad,
             departamento=datos.departamento,
             observaciones=datos.observaciones,
+            activo=True,
         )
 
         return BeneficiarioRepository.crear(
@@ -127,9 +153,6 @@ class BeneficiarioService:
         beneficiario_id: int,
         datos: BeneficiarioUpdate,
     ) -> Beneficiario:
-        """
-        Actualiza un beneficiario existente.
-        """
 
         beneficiario = (
             BeneficiarioService._obtener_beneficiario(
@@ -159,7 +182,7 @@ class BeneficiarioService:
 
         for campo, valor in (
             datos.model_dump(
-                exclude_unset=True
+                exclude_unset=True,
             ).items()
         ):
             setattr(
@@ -178,9 +201,6 @@ class BeneficiarioService:
         db: Session,
         beneficiario_id: int,
     ) -> None:
-        """
-        Elimina un beneficiario.
-        """
 
         beneficiario = (
             BeneficiarioService._obtener_beneficiario(
