@@ -10,6 +10,8 @@ import ProtectedRoute from "./ProtectedRoute";
 
 import ImplementosPage from "../modules/implementos/pages/ImplementosPage";
 
+import BeneficiariosPage from "../modules/beneficiarios/pages/BeneficiariosPage";
+
 export default function AppRouter() {
   const { isAuthenticated } = useAuth();
 
@@ -40,6 +42,15 @@ export default function AppRouter() {
         element={
           <ProtectedRoute>
             <ImplementosPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/beneficiarios"
+        element={
+          <ProtectedRoute>
+            <BeneficiariosPage />
           </ProtectedRoute>
         }
       />

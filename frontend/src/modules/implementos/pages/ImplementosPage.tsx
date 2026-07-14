@@ -3,8 +3,6 @@ import { useState } from "react";
 import {
   Box,
   Button,
-  Stack,
-  Typography,
 } from "@mui/material";
 
 import SnackbarMessage from "@/shared/components/SnackbarMessage";
@@ -18,6 +16,8 @@ import { useImplementos } from "@/modules/implementos/hooks/useImplementos";
 import { useCrearImplemento } from "@/modules/implementos/hooks/useCrearImplemento";
 
 import type { ImplementoFormData } from "@/modules/implementos/schemas/implementoSchema";
+
+import PageHeader from "@/shared/components/PageHeader";
 
 export default function ImplementosPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -74,33 +74,32 @@ export default function ImplementosPage() {
     }
   }
 
+  console.log({
+    implementos,
+    isLoading,
+    isError,
+    categorias,
+    crearPendiente: crearImplemento.isPending,
+  });
+
   return (
     <Box
       sx={{
         p: 4,
       }}
     >
-      <Stack
-        direction="row"
-        sx={{
-          mb: 4,
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography variant="h4">
-          Implementos
-        </Typography>
-
-        <Button
-          variant="contained"
-          onClick={() =>
-            setDialogOpen(true)
-          }
-        >
-          Nuevo Implemento
-        </Button>
-      </Stack>
+      <PageHeader
+  title="Implementos"
+  backTo="/dashboard"
+  action={
+    <Button
+      variant="contained"
+      onClick={() => setDialogOpen(true)}
+    >
+      Nuevo Implemento
+    </Button>
+  }
+/>
 
       <ImplementosTable
         rows={implementos}

@@ -5,19 +5,29 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
+
 import { useNavigate } from "react-router-dom";
 
+import { useAuth } from "../contexts/AuthContext";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
 
+  const { logout } = useAuth();
+
+  function handleLogout() {
+    logout();
+    navigate("/", {
+      replace: true,
+    });
+  }
 
   return (
-      <Box
-        sx={{
-          p: 4,
-        }}
-      >
+    <Box
+      sx={{
+        p: 4,
+      }}
+    >
       <Typography
         variant="h4"
         gutterBottom
@@ -43,9 +53,7 @@ export default function DashboardPage() {
               Implementos
             </Typography>
 
-            <Typography
-              sx={{ my: 2 }}
-            >
+            <Typography sx={{ my: 2 }}>
               Administración del inventario.
             </Typography>
 
@@ -68,14 +76,17 @@ export default function DashboardPage() {
             </Typography>
 
             <Typography sx={{ my: 2 }}>
-              Próximamente
+              Administración de beneficiarios.
             </Typography>
 
             <Button
               fullWidth
-              disabled
+              variant="contained"
+              onClick={() =>
+                navigate("/beneficiarios")
+              }
             >
-              Disponible próximamente
+              Ingresar
             </Button>
           </Paper>
         </Grid>
@@ -104,8 +115,10 @@ export default function DashboardPage() {
         sx={{
           mt: 5,
         }}
+        color="error"
+        variant="outlined"
+        onClick={handleLogout}
       >
-        
         Cerrar sesión
       </Button>
     </Box>
