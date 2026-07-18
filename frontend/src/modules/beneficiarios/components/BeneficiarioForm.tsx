@@ -6,11 +6,13 @@ import {
 
 import { useFormContext } from "react-hook-form";
 
+import type { BeneficiarioFormData } from "../schemas/beneficiarioSchema";
+
 export default function BeneficiarioForm() {
   const {
     register,
     formState: { errors },
-  } = useFormContext();
+  } = useFormContext<BeneficiarioFormData>();
 
   return (
     <Grid
@@ -22,13 +24,11 @@ export default function BeneficiarioForm() {
         <TextField
           select
           fullWidth
-          label="Tipo documento"
+          label="Tipo de documento"
           defaultValue="CI"
           {...register("tipo_documento")}
           error={!!errors.tipo_documento}
-          helperText={
-            errors.tipo_documento?.message as string
-          }
+          helperText={errors.tipo_documento?.message}
         >
           <MenuItem value="CI">
             Cédula
@@ -50,9 +50,7 @@ export default function BeneficiarioForm() {
           label="Número de documento"
           {...register("numero_documento")}
           error={!!errors.numero_documento}
-          helperText={
-            errors.numero_documento?.message as string
-          }
+          helperText={errors.numero_documento?.message}
         />
       </Grid>
 
@@ -62,9 +60,7 @@ export default function BeneficiarioForm() {
           label="Nombre"
           {...register("nombre")}
           error={!!errors.nombre}
-          helperText={
-            errors.nombre?.message as string
-          }
+          helperText={errors.nombre?.message}
         />
       </Grid>
 
@@ -74,17 +70,20 @@ export default function BeneficiarioForm() {
           label="Apellido"
           {...register("apellido")}
           error={!!errors.apellido}
-          helperText={
-            errors.apellido?.message as string
-          }
+          helperText={errors.apellido?.message}
         />
       </Grid>
 
       <Grid size={{ xs: 12 }}>
         <TextField
           fullWidth
-          label="Fecha de nacimiento"
           type="date"
+          label="Fecha de nacimiento"
+          slotProps={{
+            inputLabel: {
+              shrink: true,
+            },
+          }}
           {...register("fecha_nacimiento")}
         />
       </Grid>
@@ -111,9 +110,7 @@ export default function BeneficiarioForm() {
           label="Correo electrónico"
           {...register("email")}
           error={!!errors.email}
-          helperText={
-            errors.email?.message as string
-          }
+          helperText={errors.email?.message}
         />
       </Grid>
 

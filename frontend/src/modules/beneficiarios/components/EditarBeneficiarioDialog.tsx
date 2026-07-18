@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
@@ -15,6 +17,8 @@ import {
 
 import BeneficiarioForm from "./BeneficiarioForm";
 
+import type { Beneficiario } from "../types/beneficiario";
+
 import {
   beneficiarioSchema,
   type BeneficiarioFormData,
@@ -25,6 +29,8 @@ interface Props {
 
   loading: boolean;
 
+  beneficiario: Beneficiario | null;
+
   onClose: () => void;
 
   onGuardar: (
@@ -32,9 +38,10 @@ interface Props {
   ) => Promise<void>;
 }
 
-export default function NuevoBeneficiarioDialog({
+export default function EditarBeneficiarioDialog({
   open,
   loading,
+  beneficiario,
   onClose,
   onGuardar,
 }: Props) {
@@ -60,12 +67,55 @@ export default function NuevoBeneficiarioDialog({
       },
     });
 
+  useEffect(() => {
+    if (!beneficiario) {
+      return;
+    }
+
+    methods.reset({
+      tipo_documento:
+        beneficiario.tipo_documento,
+
+      numero_documento:
+        beneficiario.numero_documento,
+
+      nombre:
+        beneficiario.nombre,
+
+      apellido:
+        beneficiario.apellido,
+
+      fecha_nacimiento:
+        beneficiario.fecha_nacimiento,
+
+      telefono:
+        beneficiario.telefono ?? "",
+
+      celular:
+        beneficiario.celular ?? "",
+
+      email:
+        beneficiario.email ?? "",
+
+      direccion:
+        beneficiario.direccion ?? "",
+
+      ciudad:
+        beneficiario.ciudad ?? "",
+
+      departamento:
+        beneficiario.departamento ?? "",
+
+      observaciones:
+        beneficiario.observaciones ?? "",
+    });
+
+  }, [beneficiario, methods]);
+
   async function submit(
     datos: BeneficiarioFormData,
   ) {
     await onGuardar(datos);
-
-    methods.reset();
   }
 
   return (
@@ -76,7 +126,7 @@ export default function NuevoBeneficiarioDialog({
       fullWidth
     >
       <DialogTitle>
-        Nuevo Beneficiario
+        Editar Beneficiario
       </DialogTitle>
 
       <FormProvider {...methods}>
@@ -90,7 +140,9 @@ export default function NuevoBeneficiarioDialog({
           </DialogContent>
 
           <DialogActions>
-            <Button onClick={onClose}>
+            <Button
+              onClick={onClose}
+            >
               Cancelar
             </Button>
 
@@ -101,7 +153,7 @@ export default function NuevoBeneficiarioDialog({
             >
               {loading
                 ? "Guardando..."
-                : "Guardar"}
+                : "Guardar cambios"}
             </Button>
           </DialogActions>
         </form>

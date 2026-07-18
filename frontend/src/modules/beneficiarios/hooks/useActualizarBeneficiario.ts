@@ -2,6 +2,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import beneficiarioService from "../services/beneficiarioService";
 
+import type { BeneficiarioFormData } from "../schemas/beneficiarioSchema";
+
+interface ActualizarBeneficiarioParams {
+  id: number;
+  datos: BeneficiarioFormData;
+}
+
 export function useActualizarBeneficiario() {
   const queryClient = useQueryClient();
 
@@ -9,12 +16,7 @@ export function useActualizarBeneficiario() {
     mutationFn: ({
       id,
       datos,
-    }: {
-      id: number;
-      datos: Parameters<
-        typeof beneficiarioService.actualizar
-      >[1];
-    }) =>
+    }: ActualizarBeneficiarioParams) =>
       beneficiarioService.actualizar(
         id,
         datos,
