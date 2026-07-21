@@ -85,3 +85,8 @@ class Implemento(Base):
     "Mantenimiento",
     back_populates="implemento",
 )
+    
+    prestamos: Mapped[list["Prestamo"]] = relationship(
+    "Prestamo",
+    back_populates="implemento",
+)

@@ -24,7 +24,9 @@ class EstadoImplementoRepository:
 
         return (
             db.query(EstadoImplemento)
-            .filter(EstadoImplemento.id == estado_id)
+            .filter(
+                EstadoImplemento.id == estado_id,
+            )
             .first()
         )
 
@@ -36,7 +38,9 @@ class EstadoImplementoRepository:
 
         return (
             db.query(EstadoImplemento)
-            .filter(EstadoImplemento.codigo == codigo)
+            .filter(
+                EstadoImplemento.codigo == codigo,
+            )
             .first()
         )
 
@@ -48,6 +52,8 @@ class EstadoImplementoRepository:
 
         return (
             db.query(EstadoImplemento)
-            .filter(EstadoImplemento.nombre == nombre)
+            .filter(
+                EstadoImplemento.nombre == nombre,
+            )
             .first()
         )

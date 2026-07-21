@@ -110,6 +110,10 @@ class ImplementoRepository:
             .first()
         )
 
+    # --------------------------------------------------
+    # Métodos actuales (compatibilidad)
+    # --------------------------------------------------
+
     @staticmethod
     def crear(
         db: Session,
@@ -142,17 +146,31 @@ class ImplementoRepository:
         db.delete(implemento)
         db.commit()
 
+    # --------------------------------------------------
+    # Métodos preparados para transacciones
+    # --------------------------------------------------
+
+    @staticmethod
+    def agregar(
+        db: Session,
+        implemento: Implemento,
+    ) -> None:
+
+        db.add(implemento)
+
+    @staticmethod
+    def refrescar(
+        db: Session,
+        implemento: Implemento,
+    ) -> None:
+
+        db.refresh(implemento)
+
     @staticmethod
     def actualizar_estado(
         db: Session,
         implemento: Implemento,
         estado_id: int,
     ) -> None:
-        """
-        Actualiza el estado del implemento.
-
-        No realiza commit.
-        La transacción será controlada por el Service.
-        """
 
         implemento.estado_id = estado_id
