@@ -9,8 +9,8 @@ import NotFoundPage from "../pages/NotFoundPage";
 import ProtectedRoute from "./ProtectedRoute";
 
 import ImplementosPage from "../modules/implementos/pages/ImplementosPage";
-
 import BeneficiariosPage from "../modules/beneficiarios/pages/BeneficiariosPage";
+import PrestamosPage from "../modules/prestamos/pages/PrestamosPage";
 
 export default function AppRouter() {
   const { isAuthenticated } = useAuth();
@@ -56,9 +56,19 @@ export default function AppRouter() {
       />
 
       <Route
+        path="/prestamos"
+        element={
+          <ProtectedRoute>
+            <PrestamosPage />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
         path="*"
         element={<NotFoundPage />}
       />
+
     </Routes>
   );
 }

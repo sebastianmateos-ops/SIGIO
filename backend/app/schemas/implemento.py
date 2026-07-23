@@ -58,3 +58,11 @@ class ImplementoListItem(BaseModel):
     estado: str
 
     ubicacion: str | None = None
+
+class ImplementoSimple(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    codigo: str
+    marca: str | None = None
+    modelo: str | None = None

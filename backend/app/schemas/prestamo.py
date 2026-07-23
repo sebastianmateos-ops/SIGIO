@@ -2,6 +2,9 @@ from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.schemas.beneficiario import BeneficiarioSimple
+from app.schemas.implemento import ImplementoSimple
+
 
 class PrestamoBase(BaseModel):
 
@@ -45,9 +48,9 @@ class PrestamoResponse(BaseModel):
 
     uuid: str
 
-    implemento_id: int
+    implemento: ImplementoSimple
 
-    beneficiario_id: int
+    beneficiario: BeneficiarioSimple
 
     fecha_prestamo: datetime
 

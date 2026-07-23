@@ -138,3 +138,11 @@ class BeneficiarioResponse(BeneficiarioBase):
     model_config = ConfigDict(
         from_attributes=True,
     )
+
+class BeneficiarioSimple(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    codigo: str
+    nombre: str
+    apellido: str
